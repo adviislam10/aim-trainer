@@ -27,13 +27,29 @@ green = (0, 200, 0)
 blue = (85, 206, 255)
 colors = [red, green, blue]
 
+circles = []
+currentCircle = None
+
+class Circle:
+    def __init__(self, cx, cy, circleWidth, color) :
+
+        self.cx = cx
+        self.cy = cy
+        self.circleWidth = circleWidth
+        self.color = color
+
+    def drawCircle(self):
+        pygame.draw.circle(display, self.color, (self.cx, self.cy), self.circleWidth)
+
+
+
 # Set Frame Rate
 clock = pygame.time.Clock()
 
-cx = random.randint(20, width - 20)
-cy = random.randint(20, height - 20)
-circleWidth = random.randint(14,20)
-pygame.draw.circle(display, random.choice(colors), (cx, cy), circleWidth)
+# First 3 circles
+circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
+circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
+circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
 
 # Easy loop
 while True:
@@ -42,19 +58,25 @@ while True:
             pygame.quit()
             quit()
 
+    for i in range(0,1):
+        Circle.drawCircle(circles[i])
+
+    # Set current circle as first circle in array
+    currentCircle = circles[0]
+
     x = pygame.mouse.get_pos()[0]
     y = pygame.mouse.get_pos()[1]
     click = pygame.mouse.get_pressed()
 
-    sqx = (x - cx) **2
-    sqy = (y -cy) **2
+    sqx = (x - currentCircle.cx) **2
+    sqy = (y - currentCircle.cy) **2
+    circleWidth = currentCircle.circleWidth
 
+    # Detect and draw circles
     if math.sqrt(sqx + sqy) < circleWidth and click[0] == 1:
         display.fill(black) # reset screen
-        cx = random.randint(20, width - 20)
-        cy = random.randint(20, height - 20)
-        circleWidth = random.randint(14,20)
-        pygame.draw.circle(display, random.choice(colors), (cx, cy), circleWidth)
+        del circles[0]
+        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
         score  = score + 1
         score = display_score()
 
