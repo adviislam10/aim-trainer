@@ -28,6 +28,7 @@ colors = [red, green, blue]
 
 circles = []
 currentCircle = None
+frameRate = 0
 
 class Circle:
     def __init__(self, cx, cy, circleWidth, color) :
@@ -45,9 +46,7 @@ class Circle:
 # Set Frame Rate
 clock = pygame.time.Clock()
 
-# First 3 circles
-circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
-circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
+# First circle
 circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
 
 # Easy loop
@@ -57,8 +56,12 @@ while True:
             pygame.quit()
             quit()
 
-    for i in range(0,1):
-        Circle.drawCircle(circles[i])
+    # Add Circles and draw every second
+    frameRate += 1
+    if frameRate% 60 == 0:
+        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
+    for i in range(len(circles)):
+        circles[i].drawCircle()
 
     # Set current circle as first circle in array
     currentCircle = circles[0]
@@ -75,7 +78,6 @@ while True:
     if math.sqrt(sqx + sqy) < circleWidth and click[0] == 1:
         display.fill(black) # reset screen
         del circles[0]
-        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
         score  = score + 1
         score = display_score()
 
