@@ -8,7 +8,7 @@ pygame.init()
 pygame.display.set_caption('Aim trainer')
 width = 1200
 height = 800
-screen = display = pygame.display.set_mode((width, height))
+display = pygame.display.set_mode((width, height))
 test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 score = 0
 
@@ -16,7 +16,7 @@ score = 0
 def display_score():
     score_surf = test_font.render(f'Score: {score}', False, (64,64,64))
     score_rect = score_surf.get_rect(center = (600,50))
-    screen.blit(score_surf, score_rect)
+    display.blit(score_surf, score_rect)
     return score
 
 # Colors
@@ -41,13 +41,18 @@ class Circle:
     def drawCircle(self):
         pygame.draw.circle(display, self.color, (self.cx, self.cy), self.circleWidth)
 
-
+# End Game function
+def endGame():
+    display.fill(black)
+    score_surf = test_font.render(f'Score: {score}', False, (200,64,64))
+    score_rect = score_surf.get_rect(center = (600,400))
+    display.blit(score_surf, score_rect)
 
 # Set Frame Rate
 clock = pygame.time.Clock()
 
 # First circle
-circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
+circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(18,25), random.choice(colors)))
 
 # Easy loop
 while True:
@@ -56,15 +61,26 @@ while True:
             pygame.quit()
             quit()
 
-    # Add Circles and draw every second
-    frameRate += 1
-    if frameRate% 60 == 0:
-        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(14,20), random.choice(colors)))
-    for i in range(len(circles)):
-        circles[i].drawCircle()
-
     # Set current circle as first circle in array
     currentCircle = circles[0]
+
+    display_score()
+
+    # Add Circles and draw every second
+    frameRate += 1
+    if frameRate % 60 == 0:
+        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(18,25), random.choice(colors)))
+
+    # Shrink function
+    if frameRate % 1 == 0:
+        currentCircle.circleWidth -= 0.10
+        display.fill(black) # reset screen
+        display_score() # display score
+        for i in range(len(circles)):
+            circles[i].drawCircle()
+
+    if currentCircle.circleWidth < 4:
+        endGame()
 
     x = pygame.mouse.get_pos()[0]
     y = pygame.mouse.get_pos()[1]
@@ -77,7 +93,12 @@ while True:
     # Detect and draw circles
     if math.sqrt(sqx + sqy) < circleWidth and click[0] == 1:
         display.fill(black) # reset screen
+
+        # Delete and reset current circle
         del circles[0]
+        currentCircle = circles[0]
+
+        # Add and display score
         score  = score + 1
         score = display_score()
 
