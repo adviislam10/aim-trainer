@@ -9,12 +9,26 @@ pygame.display.set_caption('Aim trainer')
 width = 1200
 height = 800
 display = pygame.display.set_mode((width, height))
-test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
+font = pygame.font.Font('font/Pixeltype.ttf', 50)
+bigfont = pygame.font.Font('font/Pixeltype.ttf', 150)
 score = 0
+
+# Main Menu Function
+def main():
+    while True:
+        display.fill((32,32,32))
+        main_surf = bigfont.render('MAIN MENU', False, (64,64,64))
+        main_rect = main_surf.get_rect(center = (600,50))
+        display.blit(main_surf, main_rect)
+
+        # Check if mouse click
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                False
 
 # Score function
 def display_score():
-    score_surf = test_font.render(f'Score: {score}', False, (64,64,64))
+    score_surf = font.render(f'Score: {score}', False, (64,64,64))
     score_rect = score_surf.get_rect(center = (600,50))
     display.blit(score_surf, score_rect)
     return score
@@ -48,7 +62,7 @@ class Circle:
 # End Game function
 def endGame():
     display.fill(black)
-    score_surf = test_font.render(f'Score: {score}', False, (200,64,64))
+    score_surf = font.render(f'Score: {score}', False, (200,64,64))
     score_rect = score_surf.get_rect(center = (600,400))
     display.blit(score_surf, score_rect)
 
