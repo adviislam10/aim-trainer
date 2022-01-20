@@ -23,8 +23,12 @@ def display_score():
 black = (0,0,0)
 red = (200, 0, 0)
 green = (0, 200, 0)
-blue = (85, 206, 255)
-colors = [red, green, blue]
+blue = (0, 0, 255)
+yellow = (255, 255, 0)
+pink = (255, 0 , 127)
+white = (255, 255, 255)
+orange = (255, 130, 0)
+colors = [red, green, blue, yellow, pink, white, orange]
 
 circles = []
 currentCircle = None
@@ -68,7 +72,7 @@ while True:
 
     # Add Circles and draw every second
     frameRate += 1
-    if frameRate % 60 == 0:
+    if frameRate % 200 == 0:
         circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(18,25), random.choice(colors)))
 
     # Shrink function
@@ -79,8 +83,8 @@ while True:
         for i in range(len(circles)):
             circles[i].drawCircle()
 
-    if currentCircle.circleWidth < 4:
-        endGame()
+    #if currentCircle.circleWidth < 4:
+        #endGame()
 
     x = pygame.mouse.get_pos()[0]
     y = pygame.mouse.get_pos()[1]
@@ -93,6 +97,7 @@ while True:
     # Detect and draw circles
     if math.sqrt(sqx + sqy) < circleWidth and click[0] == 1:
         display.fill(black) # reset screen
+        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(18,25), random.choice(colors)))
 
         # Delete and reset current circle
         del circles[0]
