@@ -56,9 +56,9 @@ def endGame():
 clock = pygame.time.Clock()
 
 # First circle
-circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(18,25), random.choice(colors)))
+circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(22,25), random.choice(colors)))
 
-# Easy loop
+# Main loop
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -73,19 +73,28 @@ while True:
     # Add Circles and draw every second
     frameRate += 1
     if frameRate % 200 == 0:
-        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(18,25), random.choice(colors)))
+        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(22,25), random.choice(colors)))
 
     # Shrink function
     if frameRate % 1 == 0:
         currentCircle.circleWidth -= 0.10
         display.fill(black) # reset screen
         display_score() # display score
+
+    # Draw Shrinking Cirles onto screen
         for i in range(len(circles)):
             circles[i].drawCircle()
 
-    #if currentCircle.circleWidth < 4:
-        #endGame()
+    # Shrink next circle
+    if len(circles) > 1:
+        if frameRate % 1 == 0:
+            circles[1].circleWidth -= 0.10
 
+
+    if currentCircle.circleWidth < 4:
+        endGame()
+
+    # Mouse detection 
     x = pygame.mouse.get_pos()[0]
     y = pygame.mouse.get_pos()[1]
     click = pygame.mouse.get_pressed()
@@ -97,7 +106,7 @@ while True:
     # Detect and draw circles
     if math.sqrt(sqx + sqy) < circleWidth and click[0] == 1:
         display.fill(black) # reset screen
-        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(18,25), random.choice(colors)))
+        circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(22,25), random.choice(colors)))
 
         # Delete and reset current circle
         del circles[0]
