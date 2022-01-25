@@ -61,11 +61,11 @@ hardbutton = Button((32,32,32), 500, 500, 250, 100, 'Hard')
 
 def easymode():
     global shrinkRate
-    shrinkRate = 0.08
+    shrinkRate = 0.05
 
 def hardmode():
     global shrinkRate
-    shrinkRate = 0.15
+    shrinkRate = 0.12
 
 # Main Menu Function
 def main():
