@@ -14,6 +14,7 @@ font = pygame.font.Font('font/Pixeltype.ttf', 50)
 bigfont = pygame.font.Font('font/Pixeltype.ttf', 150)
 score = 0
 shrinkRate = None
+gameactive = False
 
 # Button class
 class Button():
@@ -56,7 +57,7 @@ def window():
 
 # Create buttons
 easybutton = Button((32,32,32), 500, 250, 250, 100, 'Easy')
-hardbutton = Button((32,32,32), 500, 500, 250, 100, 'Hard')
+hardbutton = Button((32,32,32), 500, 500, 250, 100, 'Hard') 
 
 def easymode():
     global shrinkRate
@@ -68,7 +69,10 @@ def hardmode():
 
 # Main Menu Function
 def main():
+    global gameactive, score
+    score = 0
     loop = True
+
     while loop:
         window()
         pygame.display.update()
@@ -85,10 +89,12 @@ def main():
                 if easybutton.hover(pos):
                     easymode()
                     loop = False
+                    gameactive = True
 
                 elif hardbutton.hover(pos):
                     hardmode()
                     loop = False
+                    gameactive = True
 
             if event.type == pygame.MOUSEMOTION:
                 if easybutton.hover(pos):
@@ -106,7 +112,7 @@ main()
 
 # Score function
 def display_score():
-    score_surf = font.render(f'Score: {score}', False, (64,64,64))
+    score_surf = font.render(f'Score: {score}', False, (75,75,75))
     score_rect = score_surf.get_rect(center = (600,50))
     display.blit(score_surf, score_rect)
     return score
@@ -150,9 +156,11 @@ def endGame():
     restart_rect = restart_surf.get_rect(center = (600,500))
     display.blit(restart_surf, restart_rect)
 
-    for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            main()
+    click = pygame.mouse.get_pressed()
+    if click[0] == 1:
+        display.fill(black)
+        main()
+
 
 # Set Frame Rate
 clock = pygame.time.Clock()
@@ -160,16 +168,15 @@ clock = pygame.time.Clock()
 # First circle
 circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(22,25), random.choice(colors)))
 
-# Main loop
-while True:
+# Game loop
+while gameactive:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
-
+                
     # Set current circle as first circle in array
     currentCircle = circles[0]
-
     display_score()
 
     # Add Circles and draw every second
