@@ -162,11 +162,8 @@ def endGame():
         main()
 
 
-# Set Frame Rate
-clock = pygame.time.Clock()
-
-# First circle
-circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(22,25), random.choice(colors)))
+clock = pygame.time.Clock()  # set frame rate
+circles.append(Circle(random.randint(20, width - 20), random.randint(20, height - 20), random.randint(22,25), random.choice(colors)))  # first circle
 
 # Game loop
 while gameactive:
